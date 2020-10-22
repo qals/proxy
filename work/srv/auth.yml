@@ -1,0 +1,22 @@
+http:
+    routers:
+      google-auth:
+        rule: "Host(`auth.demo.com`)"
+        service: "google-auth"
+        middlewares:
+          - "google-auth"
+        entryPoints:
+          - "https"
+        tls:
+            certResolver: "default"
+    services:
+      google-auth:
+        loadBalancer:
+          servers:
+            - url: "http://auth:4181"
+    middlewares:
+      google-auth:
+        forwardAuth:
+          address: "http://auth:4181"
+          authResponseHeaders:
+            - "X-Forwarded-User"

@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik
+    container_name: proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /app/proxy/work/traefik.yml:/etc/traefik/traefik.yml
+      - /app/proxy/work/acme.json:/acme.json
+      - /app/proxy/work/srv:/srv
+    networks:
+      - proxy
+
+  traefik-forward-auth:
+    image: thomseddon/traefik-forward-auth
+    container_name: auth
+    networks:
+      - proxy
+    volumes:
+      - /app/proxy/work/auth.ini:/auth.ini
+    command:
+      - "--config=/auth.ini"
+
+networks:
+  proxy:
+    external:
+      name: proxy

@@ -1,0 +1,19 @@
+http:
+  routers:
+    nginx:
+      entryPoints:
+        - "https"
+      rule: "Host(`demo.cc`)"
+      middlewares:
+        - "google-auth"
+      service: "nginx"
+      tls:
+        certResolver: default
+
+http:
+  services:
+    nginx:
+      loadBalancer:
+        servers:
+          - url: "http://nginx"
+

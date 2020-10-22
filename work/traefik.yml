@@ -1,0 +1,38 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+api:
+  dashboard: true
+
+log:
+  level: DEBUG
+  filePath:  "/log/proxy.log"
+
+accessLog:
+  filePath: "/log/proxy.err"
+
+entryPoints:
+  http:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+  https:
+    address: ":443"
+
+providers:
+  file:
+    directory: "/srv"
+    watch: true
+
+certificatesResolvers:
+  default:
+    acme:
+      email: "info@demo.com"
+      storage: "/acme.json"
+      httpChallenge:
+        entryPoint: "http"
+

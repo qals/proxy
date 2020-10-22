@@ -1,0 +1,11 @@
+http:
+    routers:
+      admin:
+        rule: "Host(`a.demo.cc`)"
+        service: "api@internal"
+        middlewares:
+          - "google-auth"
+        entryPoints:
+          - "https"
+        tls:
+            certResolver: "default"
